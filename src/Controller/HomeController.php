@@ -13,4 +13,8 @@ class HomeController extends AbstractController
     {
         return $this->render('home/index.html.twig');
     }
+
+    public function dump() {
+        dd("test1");
+    }
 }

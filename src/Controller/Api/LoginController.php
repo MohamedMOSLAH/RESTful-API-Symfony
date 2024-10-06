@@ -16,7 +16,7 @@ class LoginController extends AbstractController
 
         $userData = [
             'email' => $user->getEmail(),
-            'firstName' => $user->getFirstName(),
+            'first_name' => $user->getFirstName(),
             'last_name' => $user->getLastName(),
 
         ];

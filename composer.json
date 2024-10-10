@@ -20,7 +20,8 @@
         "symfony/security-bundle": "6.4.*",
         "symfony/twig-bundle": "6.4.*",
         "symfony/validator": "6.4.*",
-        "symfony/yaml": "6.4.*"
+        "symfony/yaml": "6.4.*",
+        "willdurand/hateoas": "^3.10"
     },
     "config": {
         "allow-plugins": {

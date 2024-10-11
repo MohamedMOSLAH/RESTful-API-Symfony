@@ -12,19 +12,32 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 class RegisterController extends AbstractController {
 
-    #[Route('/api/register', name: 'app_register')]
-    public function register(SerializerInterface $serializer, Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+    #[Route('/api/register', name: 'api_register')]
+    public function register(ValidatorInterface $validator, SerializerInterface $serializer, Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
 
         if($this->getUser()){
             return new JsonResponse($serializer->serialize(['message' => "you must logout into get register page"], 'json'), Response::HTTP_UNAUTHORIZED, [], true);
         }
+
+        $newUser = $serializer->deserialize($request->getContent(), User::class, 'json');
+
+        $error = $validator->validate($newUser);
+
+        if($error->count() > 0){
+            return new JsonResponse($serializer->serialize($error, 'json'), Response::HTTP_BAD_REQUEST, [], true);
+        }
+
+        $getPassword = $newUser->getPassword();
+
+
 
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);

@@ -40,26 +40,14 @@ class RegisterController extends AbstractController {
 
 
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+        $user->setPassword($userPasswordHasher->hashPassword($user, $getPassword));
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var string $plainPassword */
-            $plainPassword = $form->get('plainPassword')->getData();
+        $entityManager->persist($newUser);
+        $entityManager->flush();
 
-            // encode the plain password
-            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+        // do anything else you need here, like send an email
 
-            $entityManager->persist($user);
-            $entityManager->flush();
 
-            // do anything else you need here, like send an email
-
-            return $security->login($user, SecurityAuthenticator::class, 'main');
-        }
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form,
-        ]);
+        return new JsonResponse($serializer->serialize(['message' => "your account has been created"], "json"), Response::HTTP_OK, ['accept' => 'application/json'], true );
     }
 }

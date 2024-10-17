@@ -40,7 +40,7 @@ class RegisterController extends AbstractController {
 
 
         $user = new User();
-        $user->setPassword($userPasswordHasher->hashPassword($user, $getPassword));
+        $newUser->setPassword($userPasswordHasher->hashPassword($user, $getPassword));
 
         $entityManager->persist($newUser);
         $entityManager->flush();

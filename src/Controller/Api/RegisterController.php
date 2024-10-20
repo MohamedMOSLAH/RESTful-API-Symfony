@@ -3,11 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
-use App\Security\SecurityAuthenticator;
 use JMS\Serializer\SerializerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +17,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class RegisterController extends AbstractController {
 
     #[Route('/api/register', name: 'api_register')]
-    public function register(ValidatorInterface $validator, SerializerInterface $serializer, Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+    public function register(ValidatorInterface $validator, SerializerInterface $serializer, 
+    Request $request, UserPasswordHasherInterface $userPasswordHasher, 
+    EntityManagerInterface $entityManager): Response
     {
 
         if($this->getUser()){

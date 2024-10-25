@@ -20,6 +20,5 @@ class CategoryController extends AbstractController
         $entityManager->persist($category);
         $entityManager->flush();
 
-        return new JsonResponse('ok');
     }
 }
